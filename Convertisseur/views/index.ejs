@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel='stylesheet' href='./style.css'/>
+	<script src='./script.js'></script>
+	<title>Le convertisseur qui marche à moitié :c</title>
+</head>
+<body>
+	<h1 class='header'>Convertissez votre vidéo Youtube en fichier audio au format MP3 !</h1>
+	<input class='URL-input' placeholder='https://www.youtube.com/watch?v=dQw4w9WgXcQ'/>
+	<button class='convert-button' onclick="checkLink()">Convertir en MP3</button>
+	<div id="session" class="session">
+		<table>
+			<caption>Votre session de téléchargement. Le serveur a été lancé le : <%= sessionDate %> à <%= heure %></caption>
+		</table>
+	</div>
+
+	<p>Voici un vrai convertisseur Youtube qui vous permet de convertir vos vidéos Youtube au format MP3 ! C'est <b>gratuit</b> et <b>sans publicités</b> ! Entrez votre lien et laissez le programme faire le reste, vous n'avez juste qu'à télécharger votre fichier ! <i>À noter que l'opération peut prendre un peu de temps.</i></p>
+</body>
+</html>
