@@ -1,9 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const ytdl = require('ytdl-core');
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
-const { document } = (new JSDOM(`...`)).window;
 const app = express();
 const PORT = 3000;
 
@@ -13,45 +10,58 @@ app.listen(PORT, () => {
     console.log(`Le serveur fonctionne bien ! Rendez-vous sur : http://localhost:3000`);
 });
 
-let sessionNow = new Date().toLocaleDateString("fr-FR", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
-let hour = new Date().getHours();
-let minutes = new Date().getMinutes();
-if (minutes < 10) minutes = `0${minutes}`;
-let horaire = `${hour}h${minutes}`;
+function getDay(date) {
+    return date.toLocaleDateString("fr-FR", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
+}
 
-app.get('/', function(req, res) {
+function getHoraire(date) {
+    let hour = date.getHours();
+    let minutes = date.getMinutes();
+    if (minutes < 10) minutes = `0${minutes}`;
+    return `${hour}h${minutes}`;
+}
+
+let serverDate = new Date();
+let filesDownloaded = [];
+
+app.get('/', async function(req, res) {
+    let filesDownloadedReverse = filesDownloaded.reverse();
+
     res.render("./index.ejs", {
         root: __dirname,
-        sessionDate: sessionNow,
-        heure: horaire
+        sessionDate: getDay(serverDate),
+        heure: getHoraire(serverDate),
+        data: filesDownloadedReverse
     });
 });
 
-app.get('/download', async (req, res) => {
+app.get('/download', async (req, res, next) => {
     let url = req.query.url;
+    let isFetch = req.query.fetch;
 
     if(!ytdl.validateURL(url)) {
         return res.sendStatus(400);
     }
 
-    async function getTitle(url) {
+    if (isFetch === "fetch") return res.sendStatus(200);
+
+    async function getVideoInfos(url) {
         let infos = await ytdl.getBasicInfo(url);
-        return infos.videoDetails.title.replace(/[^\w\s]/g, '');
+        return {title: infos.videoDetails.title.replace(/[^\w\s]/g, ''), author: infos.videoDetails.author.name}
     }
     
-    let title = await getTitle(url);
+    let videoInfos = await getVideoInfos(url);
 
     async function download(url) {
-        let dwnldHour = new Date().getHours();
-        let dwnldMinutes = new Date().getMinutes();
-        if (dwnldMinutes < 10) dwnldMinutes = `0${dwnldMinutes}`;
-        console.log(`${dwnldHour}h${dwnldMinutes} : Le téléchargement de "${title}" a débuté !`);
-
-        res.header('Content-Disposition', `attachment; filename="${title}.mp3"`);
+        console.log(`${getHoraire(new Date())} : Vous avez téléchargé => ${videoInfos.title}`);
+        
+        res.header('Content-Disposition', `attachment; filename="${videoInfos.title}.mp3"`);
 		ytdl(url, {
 			format: 'mp3',
 			filter: 'audioonly',
 		}).pipe(res);
+  
+        filesDownloaded.push({title: videoInfos.title, author: videoInfos.author, horaire: getHoraire(new Date())});
     }
 
     download(url);

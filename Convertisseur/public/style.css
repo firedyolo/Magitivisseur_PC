@@ -45,7 +45,7 @@ body {
 }
 
 p {
-	width: 50%;
+	width: 75%;
 	position: relative;
 	left: 50%;
 	transform: translate(-50%);
@@ -53,10 +53,17 @@ p {
 	justify-items: right;
 }
 
-table,th,td{border:1px solid #cccccc}
+td {
+	text-align: left;
+	border: 1px solid white;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	padding-top: 11px;
+}
 
 table {
-	width: 80%;
+	width: 75%;
 	position: relative;
 	left: 50%;
 	transform: translate(-50%);
