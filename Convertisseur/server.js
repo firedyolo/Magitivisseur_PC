@@ -23,17 +23,23 @@ function getHoraire(date) {
     return `${hour}h${minutes}`;
 }
 
+async function checkFolder() {
+    if (!fs.existsSync("../musicDownloaded")) {
+        fs.mkdirSync("../musicDownloaded");
+    } else {
+        console.log("C'est bon niveau dossier");
+    }
+}
+
 let serverDate = new Date();
-let filesDownloaded = [];
+checkFolder();
 
 app.get('/', async function(req, res) {
-    let filesDownloadedReverse = filesDownloaded.reverse();
 
     res.render("./index.ejs", {
         root: __dirname,
         sessionDate: getDay(serverDate),
         heure: getHoraire(serverDate),
-        data: filesDownloadedReverse
     });
 });
 
@@ -61,44 +67,61 @@ app.get('/download', async (req, res) => {
     }
 
     async function download(url) {
+        await checkFolder();
+
         let videoInfos = await getVideoInfos(url);
-        console.log(`${getHoraire(new Date())} : Vous avez téléchargé => ${videoInfos.title}`);
+        let title = videoInfos.title;
+        console.log(`\x1b[36m${getHoraire(new Date())} : Le téléchargement de ${title} vient de débuter !`);
         
-        res.header('Content-Disposition', `attachment; filename="${videoInfos.title}.mp3"`);
-		ytdl(url, {
-			format: 'mp3',
-			filter: 'audioonly',
-		}).pipe(res);
-  
-        filesDownloaded.push({title: videoInfos.title, author: videoInfos.author, horaire: getHoraire(new Date())});
+        let writer = fs.createWriteStream(`../musicDownloaded/${title}.mp3`);
+        ytdl(url, {
+            format: 'mp3',
+            filter: 'audioonly',
+        }).pipe(writer);
+
+        writer.on("finish", () => {
+            console.log(`\x1b[32m${getHoraire(new Date())} : "${title}" est téléchargée !`);
+        });
     }
 
-    async function downloadPlaylist(url, title) {
-        if (fs.existsSync("./playlistSongs")) {
-            ytdl(url, {
-                format: 'mp3',
-                filter: 'audioonly',
-            }).pipe(fs.createWriteStream(`./playlistSongs/${title}.mp3`));
-        } else {
-            return console.log("Veuillez créer un dossier à l'emplacement indiqué comme dans le fichier PDF, nommé : playlistSongs");
-        }
+    /* Partie Playlist */
+
+    async function downloadPlaylist(url, title, playlistTitle, numberOfSongs, downloadedSongs) {
+        let writer = fs.createWriteStream(`../musicDownloaded/${title}.mp3`);
+        console.log(`\x1b[36m${getHoraire(new Date())} : Le téléchargement de ${title} vient de débuter !`);
+    
+        ytdl(url, {
+            format: 'mp3',
+            filter: 'audioonly',
+        }).pipe(writer);
+    
+        writer.on("finish", () => {
+            console.log(`\x1b[32m${getHoraire(new Date())} : Le téléchargement de ${title} est fini ! (${downloadedSongs}/${numberOfSongs})`);
+        });
     }
 
     async function getPlaylistInfos(url) {
         let infos = await ytpl(url, {pages: Infinity});
-
+        let numberOfSongs = infos.estimatedItemCount;
+        let playlistTitle = infos.title;
+    
         for (const video of infos.items) {
             titleOfPlaylist.push(video.id);
         }
+    
+        return {titleOfPlaylist: playlistTitle, numberOfSongs: numberOfSongs};
     }
 
     //Exécution de la playlist ou pas
     if (isplaylist === "listplay") {
-        await getPlaylistInfos(url);
+        let playlistInfos = await getPlaylistInfos(url);
+        let downloadedSongs = 0;
+        console.log(`\x1b[44mEn attente de téléchargement de ${playlistInfos.numberOfSongs} éléments issus de la playlist "${playlistInfos.titleOfPlaylist}"\x1b[0m`);
         for (const videoID of titleOfPlaylist) {
             let title = await getTitle(videoID);
-            downloadPlaylist(videoID, title);
-        }
+            downloadedSongs++;
+            downloadPlaylist(videoID, title, playlistInfos.titleOfPlaylist, playlistInfos.numberOfSongs, downloadedSongs);
+        } 
     } else {
         download(url);
     }

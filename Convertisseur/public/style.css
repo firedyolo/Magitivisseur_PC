@@ -57,36 +57,12 @@ a {
 	border-color: #460202;
 }
 
-/* Partie du tableau */
-
-td {
-	text-align: left;
-	border: 1px solid white;
-	border-top: none;
-	border-left: none;
-	border-right: none;
-	padding-top: 11px;
-	color: rgb(170, 166, 166);
+/* Partie "infos" */
+.infos {
+	border-top: #2e332d 1px solid;
 }
 
-table {
-	width: 75%;
-	position: relative;
-	left: 50%;
-	transform: translate(-50%);
-}
-
-caption {
-	width: auto;
-}
-
-/* Partie Discord */
-
-.discord {
-	border-top: 1px solid grey;
-}
-
-.discord h1 {
+.infos h1 {
 	position: relative;
 	left: 25%;
 	transform: translate(-25%);
@@ -94,7 +70,7 @@ caption {
 	font-size: 3rem;
 }
 
-.discord h2 {
+.infos h2 {
 	position: relative;
 	color: #9e77e6;
 	font-size: 2.5rem;
@@ -102,30 +78,43 @@ caption {
 	margin-left: 15px;
 }
 
-.discord ul {
+.infos ul {
 	list-style: none;
 }
 
-.discord li {
+.infos li {
 	text-align: left;
 	font-size: large;
 	padding-top: 5px;
 	color: rgb(170, 166, 166);
 }
 
-.discord img {
-	width: 15%;
-	position: relative;
-	bottom: 125px;
+.faq {
+	float: left;
 }
 
-.discord iframe {
-	position: absolute;
-	right: 10px;
+/* Partie "infos" - "faq" */
+.faq {
+	width: 50%;
+    text-indent: 15px;
+	border-right: #2e332d 1px solid;
+}
+
+.faq h1, .faq h2 {
+	text-align: center;
+}
+
+/* Partie "infos" - "Discord" */
+.discord {
+	width: 49%;
+	float: right;
+}
+
+.discord h1, .discord h2 {
+	text-align: center;
 }
 
 /* Partie responsive */
-
 @media only screen and (max-width: 600px) {
 	.URL-input {
 		width: auto;
