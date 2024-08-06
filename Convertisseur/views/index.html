@@ -1,3 +1,89 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ae414dea051d2ed1a150fff5a14b984ef290754fcd6856a61d275e2afe2baa7a
-size 2882
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel='stylesheet' href='./style.css'/>
+	<script src='./script.js'></script>
+	<script src="/request.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+	<title>Magitivisseur</title>
+</head>
+<body>
+    <header>
+		<a href="https://magitivisseur.netlify.app/" target="_blank"><img src="./logo.png" alt=""></a>
+		<a href="https://discord.gg/S8Xf8Bc24g" target="_blank"><img src="./discord.svg" alt=""></a>
+    </header>
+
+    <div class="convert-buttons">
+        <h1>De Youtube à fichier audio ou vidéo, il n'y a qu'un clic !</h1>
+        <input class='URL-input' placeholder='https://www.youtube.com/watch?v=dQw4w9WgXcQ'/>
+        <button onclick="checkLink('mp3')">mp3</button>
+        <button onclick="checkLink('mp4')">mp4</button>
+    </div>
+
+    <div class="cmd">
+        <div class="cmd-header">
+            <img src="./logo.png">
+            <p>­ Start.bat</p>
+            <div class="cmd-icons">
+                <p>▬</p> <p class="square">□</p> <p class="X">X</p>
+            </div>
+        </div>
+        <div class="statut" id="statut">
+            <p style="padding-top: 30px;">C:\Users\User\Magitivisseur\Convertisseur>node server.js</p>
+            <p>Le serveur fonctionne. Merci d'utiliser Magitivisseur :)</p>
+            <p><a href="https://magitivisseur.netlify.app/applications/Magitivisseur-archive.zip" target="_blank" rel="noopener noreferrer" id="maj"></a></p>
+            <p class="rectangle" id="rectangle">Hello There</p>
+        </div>
+    </div>
+
+    <div class="infos">
+        <div>
+			<h1>Un projet open-source ?</h1>
+			<p>Exactement ! Le code est mit à disposition <a target="_blank" href="https://github.com/firedyolo/Magitivisseur"> ici</a>.
+		</div>
+	</div>
+
+    <footer>Magitivisseur n'est en aucun cas responsable de vos agissements. Le programme est open-source et est par conséquent, libre d'être modifié par tout le monde.</footer>
+</body>
+</html>
+
+<script>
+    const socket = io();
+
+    socket.on('bad_link', async function (res) {
+        alert("Le lien n'est pas valide !");
+    });
+
+    socket.on('status', async function (res) {
+        console.log(res);
+
+        let cmd = document.getElementById("statut");
+        let rectangle = document.getElementById("rectangle");
+        let new_prompt = document.createElement("p");
+        new_prompt.innerText = res.msg;
+
+        // Mise en style du texte qui s'affiche
+        switch (res.status) {
+            case "finish":
+                new_prompt.style.color = "green";
+                break;
+            
+            case "error":
+                new_prompt.style.color = "red";
+                break;
+
+            case "start":
+                new_prompt.style.color = "#06ADC2";
+                break;
+
+            case "other":
+                new_prompt.style.color = "yellow";
+                break;
+        }
+        
+        cmd.insertBefore(new_prompt, rectangle); // Insertion du texte au-dessus du rectangle
+    });
+</script>
