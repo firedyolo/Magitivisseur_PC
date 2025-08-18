@@ -1,0 +1,141 @@
+/*** STYLE GLOBAL ***/
+section:not(.active) * {
+    display: none;
+}
+
+.section {
+    display: block;
+}
+
+
+html, body {
+    height: 100%;
+	margin: 0px;
+	padding: 0px;
+	/*background: linear-gradient(rgb(44, 1, 9), rgb(35, 0, 0));
+	background-repeat: no-repeat;*/
+}
+
+/*** STYLE DU CONVERTISSEUR ***/
+/* Style global de la section "convert" */
+#convert {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+	margin: 0;
+	padding-top: inherit;
+	background: linear-gradient(rgb(44, 1, 9), rgb(35, 0, 0));
+	background-repeat: no-repeat;
+}
+
+/* Texte principal */
+#convert .header-text, #convert .footer {
+    color: rgb(197, 250, 250);
+    text-align: center;
+    justify-content: center;
+}
+
+/* Les boutons et la barre de lien */
+#convert .convert-ui {
+    text-align: center;
+    padding-top: 35px;
+    padding-bottom: 20px;
+}
+
+/* Mise à échelle égale de la barre de lien et des boutons de téléchargements */
+.URL-input, .convert-ui button {
+	font-size: 1em;
+	padding: 5px 10px;
+}
+
+/* Style des boutons */
+.convert-ui button {
+    background: #6d0303;
+    border-radius: 5px;
+	border: 3px solid #6d0303;
+    border-left: 10px solid #6d0303;
+    border-right: 10px solid #6d0303;
+	color: white;
+    margin-top: 1em;
+    width: max-content;
+}
+
+/* Style de la barre de lien */
+.URL-input {
+	border-radius: 5px;
+	width: 50%;
+	max-width: 370px;
+	border: 2px solid #141313;
+	background: #141313;
+	color: white;
+}
+
+/*** STYLE DES INFOS ***/
+#infos h1 {
+    position: relative;
+}
+
+/*** NAVBAR ET SON CONTENU ***/
+/* La navbar fait office de menu déroulant */
+.navbar {
+    background-color: #111;
+    position: absolute;
+    left: -50px;
+    z-index: 1;
+}
+
+/* Le texte affiché sur la navbar */
+.navbar-text {
+    background-color: rebeccapurple;
+    color: rgb(125, 136, 141);
+    padding: 16px 24px 16px 24px;
+    font-size: 20px;
+    border: none;
+}
+
+/* L'animation de la navbar quand elle est survolée */
+.navbar:hover {
+    transition: 2s;
+    left: 0px;
+}
+
+/* Affichage du contenu de la navbar quand elle est survolée */
+.navbar:hover .dropdown-content {
+    display: block;
+}
+
+/* Le contenu du menu déroulant */
+.dropdown-content {
+    display: none;
+    width: 100%;
+    position: absolute;
+    padding-top: 16px;
+    background-color: yellow;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: -1;
+}
+
+/* Les boutons du contenu du menu déroulant */
+.dropdown-content button {
+    width: 100%;
+    color: black;
+    padding: 12px 16px;
+    border: none;
+    display: block;
+    font-size: 16px;
+}
+
+/* Modification de la couleur de fond pour le bouton actif */
+/*.dropdown-content .active {
+    background-color: white!important;
+}*/
+
+/* Modification de la couleur de fond pour les boutons impaires (premier, troisième, ...) */
+.dropdown-content button:nth-child(odd) {
+    background-color: red;
+}
+
+/* Modification de la couleur de fond pour les boutons paires (deuxième, quatrième, ...) */
+.dropdown-content button:nth-child(even) {
+    background-color: blue;
+}

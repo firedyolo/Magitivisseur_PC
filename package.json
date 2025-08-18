@@ -1,0 +1,45 @@
+{
+    "name": "magitivisseur",
+    "version": "2.0.0",
+    "description": "Convertisseur de goat",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "build": "electron-builder -wl",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "firedyolo <firedyolo@ik.me>",
+    "homepage": "https://localhost",
+    "license": "ISC",
+    "devDependencies": {
+        "electron": "^37.2.3",
+        "electron-builder": "^26.0.12"
+    },
+    "dependencies": {
+        "homoglyph-search": "^1.3.0",
+        "youtubei.js": "^15.0.1"
+    },
+    "build": {
+        "productName": "Magitivisseur",
+        "files": [
+            "**/*",
+            "!ignore{/*}",
+            "!.vscode{/*}",
+            "!dist{/*}"
+        ],
+        "extraResources": [{
+            "from": "ffmpeg-bin/",
+            "to": "ffmpeg-bin",
+            "filter": ["**/*"]
+        }],
+        "mac": {
+            "target": "dmg"
+        },
+        "win": {
+            "target": "nsis"
+        },
+        "linux": {
+            "target": "deb"
+        }
+    }
+}

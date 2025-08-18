@@ -1,0 +1,165 @@
+html, body {
+    height: 100%;
+	margin: 0px;
+	padding: 0px;
+	background: content-box radial-gradient(crimson, skyblue);
+	background-repeat: no-repeat;
+}
+
+header img {
+    width: 100px;
+    border-radius: 50%;
+    position: relative;
+    left: 50%;
+    transform: translate(-100%);
+}
+
+/* Convert buttons */
+.convert-buttons {
+    text-align: center;
+}
+
+.convert-buttons h1 {
+    padding-top: 35px;
+    padding-bottom: 20px;
+    color: rgb(221, 212, 212);
+    text-align: center;
+}
+
+.convert-buttons button {
+    border-radius: 5px;
+	margin: 5px;
+	border: 3px solid #6d0303;
+    border-left: 10px solid #6d0303;
+    border-right: 10px solid #6d0303;
+	background: #6d0303;
+	color: white;
+}
+
+.URL-input, .convert-buttons button {
+    font-family: 'KGRedHands';
+    src: url('./KGRedHands.ttf') format('truetype');
+	font-size: 1em;
+	padding: 5px 10px;
+}
+
+.URL-input {
+	margin: 15px;
+	border-radius: 5px;
+	width: 50%;
+	max-width: 350px;
+	text-align: left;
+	border: 2px solid #141313;
+	background: #141313;
+	color: white;
+}
+
+/* CMD */
+.cmd {
+	width: 75%;
+	height: 35rem;
+	background-color: rgb(15, 15, 15);
+	border: #312e2e solid 1px;
+	position: relative;
+	left: 50%;
+	transform: translate(-50%);
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+.cmd::-webkit-scrollbar {
+	width: 15px;
+	height: 10px;
+	background-color: rgb(24, 22, 22);
+}
+
+.cmd::-webkit-scrollbar-thumb {
+	background: rgb(59, 54, 54); 
+}
+
+.cmd-header {
+	background-color: black;
+	height: 14px;
+	text-align: left;
+	display: flex;
+	padding: 5px;
+	width: 100%;
+}
+
+.cmd-icons {
+	letter-spacing: 15px;
+	position: absolute;
+	right: -5px;
+}
+
+.cmd-icons p {
+	float: left;
+}
+
+.cmd-icons .square {
+	position: relative;
+	top: -2px;
+}
+
+.cmd-icons .X {
+	position: relative;
+	top: -1px;
+}
+
+.cmd p {
+	text-align: left;
+	margin: 0px;
+	padding-left: 1px;
+	font-size: 14px;
+	font-family: Consolas;
+	color: #ffffffc7;
+}
+
+.cmd a {
+	margin: 0px;
+	padding-left: 1px;
+	font-size: 14px;
+	font-family: Consolas;
+	color: #f80202c7;
+}
+
+.cmd .rectangle {
+	text-align: left;
+	margin-left: 2px;
+	margin-top: 16px;
+	border-top: 4px white solid;
+	border-left: 8px white solid;
+	width: min-content;
+	font-size: 0;
+}
+
+.cmd .rectangle {
+	animation: blink 1s steps(5, start) infinite;
+}
+
+@keyframes blink {
+	to {
+	  visibility: hidden;
+	}
+}
+
+/* Info & footer */
+.infos {
+    color: white;
+    text-align: center;
+}
+
+.infos h1 {
+    font-size: 2.5rem;
+}
+
+.infos p {
+    align-items: center;
+	font-size: 1.1rem;
+}
+
+footer {
+    color: white;
+    text-align: center;
+    font-style: italic;
+}

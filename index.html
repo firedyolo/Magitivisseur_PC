@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <title>Magitivisseur</title>
+    <link rel='stylesheet' href='./frontend/styles/default.css'/>
+	<script src='./frontend/script.js'></script>
+</head>
+<body>
+
+    <!---<nav class="navbar">
+        <span class="navbar-text">Menu</span>
+        <div class="dropdown-content">
+            <button id="convert-btn-menu" onclick="showSection('convert')">Convertir</button>
+            <button id="infos-btn-menu" onclick="showSection('infos')">Infos</button>
+            
+        </div>
+    </nav>--->
+
+    <section id="convert" class="active">
+        <h1 class="header-text">De Youtube à fichier audio ou vidéo, il n'y a qu'un clic !</h1>
+        <div class="convert-ui">
+            <input class='URL-input' placeholder='https://www.youtube.com/watch?v=dQw4w9WgXcQ'/>
+            <div class="buttons-ui">
+                <button onclick="sendLink('audio')">Audio</button>
+                <button onclick="sendLink('video')">Vidéo</button>
+            </div>
+        </div>
+
+        <p class="footer">
+            Magitivisseur 
+            n'est en aucun cas responsable 
+            de vos agissements. Le programme 
+            est open-source et est par conséquent, 
+            libre d'être modifié par tout le monde.
+        </p>
+    </section>
+ 
+    <section id="infos">
+        <h1>TEST</h1>
+    </section>
+
+    
+
+    <!---<header>
+		<a href="https://magitivisseur.netlify.app/" target="_blank"><img src="./public/logo.png" alt=""></a>
+		<a href="https://discord.gg/S8Xf8Bc24g" target="_blank"><img src="./public/discord.svg" alt=""></a>
+    </header>
+
+    <div class="convert-buttons">
+        <h1>De Youtube à fichier audio ou vidéo, il n'y a qu'un clic !</h1>
+        <input class='URL-input' placeholder='https://www.youtube.com/watch?v=dQw4w9WgXcQ'/>
+        <button onclick="checkLink('mp3')">mp3</button>
+        <button onclick="checkLink('mp4')">mp4</button>
+    </div>
+
+    <div class="cmd">
+        <div class="cmd-header">
+            <img src="./public/logo.png">
+            <p>­ Start.bat</p>
+            <div class="cmd-icons">
+                <p>▬</p> <p class="square">□</p> <p class="X">X</p>
+            </div>
+        </div>
+        <div class="statut" id="statut">
+            <p style="padding-top: 30px;">C:\Users\User\Magitivisseur\Convertisseur>node server.js</p>
+            <p>Le serveur fonctionne. Merci d'utiliser Magitivisseur :)</p>
+            <p><a href="https://magitivisseur.netlify.app/applications/Magitivisseur-archive.zip" target="_blank" rel="noopener noreferrer" id="maj"></a></p>
+            <p class="rectangle" id="rectangle">Hello There</p>
+        </div>
+    </div>
+
+    <div class="infos">
+        <div>
+			<h1>Un projet open-source ?</h1>
+			<p>Exactement ! Le code est mit à disposition <a target="_blank" href="https://github.com/firedyolo/Magitivisseur"> ici</a>.
+		</div>
+	</div>
+
+    <footer>Magitivisseur 
+        n'est en aucun cas responsable 
+        de vos agissements. Le programme 
+        est open-source et est par conséquent, 
+        libre d'être modifié par tout le monde.
+    </footer>-->
+</body>
+</html>
