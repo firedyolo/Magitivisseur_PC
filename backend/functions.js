@@ -3,8 +3,10 @@ import { app, dialog } from 'electron/main';
 import homoglyphSearch from "homoglyph-search";
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
-import path from 'node:path';
+import path, { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { Readable } from "node:stream";
+
 import { Innertube } from "youtubei.js";
 
 const yt = await Innertube.create({ client_type: "WEB" });
@@ -15,9 +17,10 @@ const ffmpegBinaries = path.join(__dirname, "ffmpeg");*/
 /* Setup FFMPEG */
 function getFFmpegBin() {
     const platform = process.platform;
+    const __dirname = dirname(fileURLToPath(import.meta.url));
 
     // Chemin des binaires d'electron utilisé pendant le développement
-    const devPath = path.join("/", 'ffmpeg-bin');
+    const devPath = path.join(__dirname, '..', 'ffmpeg-bin');
 
     // Chemin des binaires d'electron utilisé dans le build
     const prodPath = path.join(process.resourcesPath, 'ffmpeg-bin');
