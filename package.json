@@ -1,6 +1,6 @@
 {
     "name": "magitivisseur",
-    "version": "2.1.1",
+    "version": "2.2.1",
     "description": "Convertisseur de goat",
     "main": "main.js",
     "scripts": {
