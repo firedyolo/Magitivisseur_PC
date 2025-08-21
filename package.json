@@ -1,6 +1,6 @@
 {
     "name": "magitivisseur",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "description": "Convertisseur de goat",
     "main": "main.js",
     "scripts": {
@@ -32,12 +32,17 @@
             "to": "ffmpeg-bin",
             "filter": ["**/*"]
         }],
-        "mac": {
-            "target": "dmg"
-        },
         "win": {
-            "target": "nsis"
+            "target": ["portable", "nsis"]
         },
+            "portable": {
+                "artifactName": "${productName}.${version}.${ext}"
+            },
+            "nsis": {
+                "artifactName": "${productName}_Installer.${version}.${ext}",
+                "deleteAppDataOnUninstall": true,
+                "runAfterFinish": false
+            },
         "linux": {
             "target": "deb"
         }
