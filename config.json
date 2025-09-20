@@ -1,0 +1,6 @@
+{
+    "downloadConfig": {
+        "audioDownloadDir": "default",
+        "videoDownloadDir": "default"
+    }
+}

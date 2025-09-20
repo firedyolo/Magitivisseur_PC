@@ -1,0 +1,86 @@
+@import url("../variables.css");
+
+/*** Base du CMD ***/
+.cmd {
+	width: 85%;
+	height: 350px;
+	background-color: rgb(15, 15, 15);
+	border: #312e2e solid 1px;
+	position: relative;
+	left: 50%;
+	transform: translate(-50%);
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+/*** Header du CMD ***/
+.cmd-header {
+	background-color: black;
+	height: fit-content;
+	width: 100%;
+}
+
+.cmd-header img {
+	width: 25px;
+	position: relative;
+	top: 5px;
+	left: 10px;
+	padding-right: 10px;
+}
+
+.cmd-header img, .software-name, .cmd-icons {
+	display: inline-flex;
+	color: var(--text-color);
+}
+
+.cmd-icons {
+	float: right;
+	letter-spacing: 15px;
+}
+
+/*** CMD container ***/
+.cmd-text-header {
+	padding-bottom: 30px;
+}
+
+.cmd-path-text {
+	padding-bottom: 30px;
+}
+
+.cmd-container p {
+	color: var(--text-color);
+	text-align: left;
+	margin: 0px;
+	padding-left: 2px;
+	font-size: 14px;
+	font-family: Consolas;
+}
+
+/*** CMD Scrollbar***/
+.cmd::-webkit-scrollbar {
+	width: 15px;
+	height: 10px;
+	background-color: rgb(24, 22, 22);
+}
+
+.cmd::-webkit-scrollbar-thumb {
+	background: rgb(59, 54, 54); 
+}
+
+/*** CMD animation ***/
+#cmd-typing-animation {
+	text-align: left;
+	margin-left: 2px;
+	margin-top: 16px;
+	border-top: 4px white solid;
+	border-left: 8px white solid;
+	width: min-content;
+	font-size: 0;
+	animation: blink 1s steps(5, start) infinite;
+}
+
+@keyframes blink {
+	to {
+	  visibility: hidden;
+	}
+}

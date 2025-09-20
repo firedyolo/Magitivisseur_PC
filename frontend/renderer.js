@@ -7,30 +7,36 @@ btn.addEventListener("click", async () => {
     filePathElement.innerHTML = filePath;
 });*/
 
-function showSection(id) {    
-    const active_section = document.querySelector('section.active');
+function showDownloadInfos(downloadData) {
+    let cmd = document.getElementById("cmd-container");
+    let rectangle = document.getElementById("cmd-typing-animation");
+    let new_prompt = document.createElement("p");
+    new_prompt.innerText = downloadData.message;
 
-    if (id === active_section.id) return;
+    // Mise en style du texte qui s'affiche
+    switch (downloadData.status) {
+        case "success":
+            new_prompt.style.color = "green";
+            break;
+            
+        case "error":
+            new_prompt.style.color = "red";
+            break;
 
-    active_section.classList.remove("active");
+        case "start":
+            new_prompt.style.color = "#06ADC2";
+            break;
 
-    const target_section = document.getElementById(id);
-    target_section.classList.add("active");
+        case "other":
+            new_prompt.style.color = "yellow";
+            break;
+        
+        default:
+            new_prompt.style.color = "rgb(197, 250, 250)";
+            break;
+    }
+
+    cmd.insertBefore(new_prompt, rectangle); // Insertion du texte au-dessus du rectangle
 }
 
-
-async function checkLink(format) {
-    //Vérifie si le champ de renseignement du lien est vide ou non
-	if (!document.querySelector('.URL-input').value) {
-		return window.apiFunctions.sendError("Veuillez indiquer un lien youtube !");
-	} else {
-		let target_url = document.querySelector('.URL-input').value; //On récupère la valeur du champ de renseignement
-		let is_playlist = await checkPlaylist(target_url);
-		
-		//await redirect(is_playlist, format, target_url); //Permet de renvoyer le lien au serveur pour le téléchargement
-		//document.querySelector('.URL-input').value = "";
-
-        //alert(format, target_url, is_playlist);
-		return;
-	}
-}
+export { showDownloadInfos }

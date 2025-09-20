@@ -1,0 +1,6 @@
+:root {
+    --background-color-gadient: linear-gradient(to bottom left, #2d070c, #000000);
+    --convert-button-color: #6d0303;
+    --text-color: rgb(197, 250, 250);
+    --url-input-border-color: #141313;
+}

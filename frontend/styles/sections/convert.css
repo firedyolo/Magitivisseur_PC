@@ -1,0 +1,54 @@
+@import url("../variables.css");
+
+/*** STYLE DU CONVERTISSEUR ***/
+/* Style global de la section "convert" */
+body {
+    background: var(--background-color-gadient);
+    background-repeat: no-repeat;
+}
+
+#convert {
+    height: 100%;
+}
+
+/* Texte principal */
+#convert .header-text, #convert .footer {
+    color: var(--text-color);
+    text-align: center;
+    justify-content: center;
+}
+
+/* Les boutons et la barre de lien */
+#convert .convert-ui {
+    text-align: center;
+    padding-top: 35px;
+    margin-bottom: 5%;
+}
+
+/* Mise à échelle égale de la barre de lien et des boutons de téléchargements */
+.URL-input, .convert-ui button {
+	font-size: 1em;
+	padding: 5px 10px;
+}
+
+/* Style des boutons */
+.convert-ui button {
+    background: var(--convert-button-color);
+    border-radius: 5px;
+	border: 3px solid var(--convert-button-color);
+    border-left: 10px solid var(--convert-button-color);
+    border-right: 10px solid var(--convert-button-color);
+	color: var(--text-color);
+    margin-top: 1em;
+    width: max-content;
+}
+
+/* Style de la barre de lien */
+.URL-input {
+	border-radius: 5px;
+	width: 60%;
+	max-width: 370px;
+	border: 2px solid var(--url-input-border-color);
+	background: var(--url-input-border-color);
+	color: var(--text-color);
+}

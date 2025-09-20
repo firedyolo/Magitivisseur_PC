@@ -9,6 +9,12 @@ import { Readable } from "node:stream";
 
 import { Innertube } from "youtubei.js";
 
+import { playlistQueue, window } from '../main.js';
+
+import downloadConfig from '../config.json' with { type: 'json' }
+import { handleQueue } from './queue.js';
+import { Bug } from './error-handler.js';
+
 const yt = await Innertube.create({ client_type: "WEB" });
 
 /*const __dirname = path.resolve(path.dirname(''));
@@ -36,29 +42,38 @@ function getFFmpegBin() {
     throw new Error('Platform non supportée');
 }
 
-function checkifFileExist(filepath) {
+function checkIfFileExist(filepath) {    
     if (existsSync(filepath)) {
-        dialog.showMessageBox({
+        /*dialog.showMessageBox({
             message: `${filepath} existe déjà. Téléchargement impossible`,
             detail: "Une option pour réécrire les fichiers s'ils existent sera disponible plus tard"
-        });
+        });*/
+        sendDownloadInfos(`${filepath} existe déjà !`, "error");
 
         return true;
     }
 }
 
 /* Télécharge l'audio d'une vidéo Youtube */
-async function downloadAudio(videoId, dir) {
-    const title = await getTitle(videoId); // titre du fichier
+async function downloadAudio(videoId, title) {    
+    if (title === undefined) {
+        title = await getTitle(videoId); // titre du fichier
+    }
+
+    //let dir = audioDownloadDir;
+    const dir = app.getPath("music");
+    
     /*const format = ffmpeg_config.audio.format;
     const ffmpeg_settings = ffmpeg_config.audio.parameters;
     const ffmpeg_settings_with_output = structuredClone(ffmpeg_settings);
     ffmpeg_settings_with_output.push(`${title}.${format}`);*/
 
     /* S'assure que le fichier n'existe pas déjà */
-    if (checkifFileExist(`${dir}/${title}.mp3`)) {
+    if (checkIfFileExist(`${dir}/${title}.mp3`)) {
         return;
     }
+
+    sendDownloadInfos(`Début du téléchargement de : ${title}`, "start");
 
     /* On récupère le WebReadableStream de l'audio*/
     const audio = await yt.download(videoId, {
@@ -68,44 +83,72 @@ async function downloadAudio(videoId, dir) {
         quality: "best"
     });
 
+    let passed = true;
+
     /* Convertissement d'un WebReadable en un Readable */
     const audiostream = Readable.fromWeb(audio);
 
     //ffmpeg -i INPUT.mkv -map 0:v -map 0:a -c:v libx264 -c:a copy OUTPUT.mp4
     /*const flac = ["-i", "pipe:3", "-codec:a", "flac", "-qscale:a", "2"];
-    flac.push(`${title}.${format}`);*/
-
-    const mp3 = ["-i", "pipe:3", "-c:a", "libmp3lame", "-qscale:a", "2"];
+    flac.push(`${dir}/${title}.flac`);*/
+    
+    const mp3 = ["-loglevel", "error", "-i", "pipe:3", "-c:a", "libmp3lame", "-qscale:a", "2"];
     mp3.push(`${dir}/${title}.mp3`);
 
     /* Initialement de la commande ffmpeg */
-    const ffmpeg = spawn(getFFmpegBin(), mp3, {
+    const ffmpeg_process = spawn(getFFmpegBin(), mp3, {
         stdio: [
-            'ignore',  // 0 = stdin (console input)
-            'ignore',  // 1 = stdout (console output)
-            'inherit',  // 2 = stderr (console error)
-            'pipe',     // 3 = pipe input 1 (audio ou vidéo)
+            "pipe",
+            "pipe",
+            "pipe",
+            "pipe"
         ]
     });
 
+    ffmpeg_process.on('error', (error) => {
+        console.log("Ffmpeg can't start :c", error);
+    });
+
     /* Utilisation des pipes pour encoder l'audio */
-    audiostream.pipe(ffmpeg.stdio[3]); // audiostream vers pipe:4
+    audiostream.pipe(ffmpeg_process.stdio[3]); // audiostream vers pipe:3
+
+    ffmpeg_process.stderr.on('data', (data) => {
+        passed = false;
+        console.error(`stderr: ${data}`);
+        new Bug({
+            detail: `Video ID : ${videoId} \nVideo : ${title} \nDetails : ${data}`,
+            message: "Une erreur est survenue avec FFMPEG",
+            title: "Ffmpeg_error",
+            type: "error",
+        }).handleBug();
+    });
 
     /* Event ffmpeg quand le processus s'arrrête */
-    ffmpeg.on('close', code => {
-        console.log(`ffmpeg exited with code ${code}`);
-        sendDownloadInfos(title);
+    ffmpeg_process.on('close', code => {
+        if (passed) {
+            return sendDownloadInfos(`${title} est téléchargé !`, "success");
+        }
     });
 }
 
 /* Permet de télécharger la vidéo cible */
-async function downloadVideo(videoId, dir) {
-    const title = await getTitle(videoId); // titre du fichier
+async function downloadVideo(videoId, title) {
+    //const title = await getTitle(videoId); // titre du fichier
+
+    if (title === undefined) {
+        title = await getTitle(videoId); // titre du fichier
+    }
+
+    //let dir = audioDownloadDir;
+    const dir = app.getPath("videos");
 
     /* S'assure que le fichier n'existe pas déjà */
-    if (checkifFileExist(`${dir}/${title}.mp4`)) {
+    if (checkIfFileExist(`${dir}/${title}.mp4`)) {
         return;
     }
+
+    sendDownloadInfos(`Début du téléchargement de : ${title}`, "start");
+    let passed = true;
 
     /* On récupère le WebReadableStream de l'audio et video*/
     const audio = await yt.download(videoId, {
@@ -127,7 +170,8 @@ async function downloadVideo(videoId, dir) {
     const videostream = Readable.fromWeb(video);
 
     /* Initialement de la commande ffmpeg */
-    const ffmpeg = spawn(getFFmpegBin(), [
+    const ffmpeg_process = spawn(getFFmpegBin(), [
+        "-loglevel", "error",
         '-i', 'pipe:3',
         '-i', 'pipe:4',
         '-map', '0:a',
@@ -137,22 +181,44 @@ async function downloadVideo(videoId, dir) {
         `${dir}/${title}.mp4`,
     ], {
         stdio: [
-            'ignore',  // 0 = stdin (console input)
-            'ignore',  // 1 = stdout (console output)
-            'inherit',  // 2 = stderr (console error)
+            'pipe',  // 0 = stdin (console input)
+            'pipe',  // 1 = stdout (console output)
+            'pipe',  // 2 = stderr (console error)
             'pipe',     // 3 = pipe input 1 (audio ou vidéo)
             'pipe',     // 4 = pipe input 2 (audio ou vidéo)
         ]
     });
 
+    ffmpeg_process.on('error', (error) => {
+        console.log("Ffmpeg can't start :c", error);
+        return new Bug({
+            detail: `${error.stack}`,
+            message: "Un problème est survenu avec ffmpeg",
+            title: "ffmpeg_error",
+            type: "error",
+        }).handleBug();
+    });
+
     /* Utilisation des pipes pour "merge" l'audio et la vidéo */
-    audiostream.pipe(ffmpeg.stdio[3]); // audiostream vers pipe:4
-    videostream.pipe(ffmpeg.stdio[4]); // videostream vers pipe:5
+    audiostream.pipe(ffmpeg_process.stdio[3]); // audiostream vers pipe:4
+    videostream.pipe(ffmpeg_process.stdio[4]); // videostream vers pipe:5
+
+    ffmpeg_process.stderr.on('data', (data) => {
+        passed = false;
+        console.error(`stderr: ${data}`);
+        new Bug({
+            detail: `Video ID : ${videoId} \nVideo : ${title} \nDetails : ${data}`,
+            message: "Une erreur est survenue avec FFMPEG",
+            title: "Ffmpeg_error",
+            type: "error",
+        }).handleBug();
+    });
 
     /* Event ffmpeg quand le processus s'arrrête */
-    ffmpeg.on('close', code => {
-        console.log(`ffmpeg exited with code ${code}`);
-        sendDownloadInfos(title);
+    ffmpeg_process.on('close', code => {
+        if (passed) {
+            return sendDownloadInfos(`${title} est téléchargé !`, "success");
+        }
     });
 }
 
@@ -160,6 +226,48 @@ async function downloadVideo(videoId, dir) {
 function extractInfosFromYoutubeURL(url) {
     const regex = /https:\/\/(www.|)(youtube.com|youtu.be)\/(?<type_of_url>watch|playlist|)(\?list=|\?v=|)(?<id>[A-Za-z0-9\-\_]+)/;
     return regex.exec(url)?.groups;
+}
+
+// https://youtube.com/playlist?list=PLqCaf82rnbbOw8LOd9JpGfCjy8axTAHVK&feature=shared : 3 items
+// https://youtube.com/playlist?list=PLqCaf82rnbbOr7eE7Q-6FeLE4DjTqLCAp&feature=shared : 40 items
+// https://youtube.com/playlist?list=PLqCaf82rnbbM-wKrXXVUwlV1Y8fA1NX6X&feature=shared : 400 items
+// https://www.youtube.com/playlist?list=PLqCaf82rnbbN3u40-q2pxvav-qQTSjF3N : 600 items
+
+async function getPlaylistInfos(playlistID, format) {    
+    const playlist = await yt.getPlaylist(playlistID, {
+        client: "WEB"
+    });
+    
+    for (const [index, video] of playlist.items.entries()) {
+        /*if (index === 0) {
+            handleQueue.emit("add", "log !")
+        }*/
+        
+        playlistQueue.add({
+            "authorName": video.author.name,
+            "format": format,
+            "videoID": video.id,
+            "videoTitle": video.title.text
+        });
+    }
+
+    let page = playlist;
+
+    while (page.has_continuation) {
+        page = await page.getContinuation();
+
+        for (const video of page.items) {
+            playlistQueue.add({
+                "authorName": video.author.name,
+                "format": format,
+                "videoID": video.id,
+                "videoTitle": video.title.text
+                //"videoTitle": await getTitle(video.id)
+            });
+        }
+    }
+
+    return { "playlistName": playlist.info.title, "playlistItems": playlist.info.total_items };
 }
 
 /* Permet de récupérer le titre de la vidéo */
@@ -190,14 +298,40 @@ async function getTitle(videoId) {
     return title.replace(/[<>:;,?"*\/^|>]+/g, "");
 }
 
-async function sendDownloadInfos(title) {
-    dialog.showMessageBox({
-        message: `${title} est téléchargé !`
+/* Permet de gérer la demande de téléchargement des Playlists */
+async function handlePlaylist(playlistID, format) {    
+    const { playlistName, playlistItems } = await getPlaylistInfos(playlistID, format);
+    sendDownloadInfos(`${playlistName} : début du téléchargement de ${playlistItems}`, 'other');
+
+    if (format === "audio") {
+        for (const video of playlistQueue) {
+            downloadAudio(video.videoID);
+            playlistQueue.delete(video);
+        }
+    }
+
+    if (format === "video") {
+        for (const video of playlistQueue) {
+            downloadVideo(video.videoID);
+            playlistQueue.delete(video);
+        }
+    }    
+}
+
+async function sendDownloadInfos(message, status) {
+    window.webContents.send('downloadsInfos', {
+        message: message,
+        status: status
     });
+    /*dialog.showMessageBox({
+        message: `${title} est téléchargé !`
+    });*/
 }
 
 export {
     downloadAudio,
     downloadVideo,
     extractInfosFromYoutubeURL,
+    handlePlaylist,
+    sendDownloadInfos
 }

@@ -1,0 +1,25 @@
+@import url("../variables.css");
+
+/*** STYLE DES INFOS ***/
+body {
+    background: var(--background-color-gadient);
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+li {
+	font-size: larger;
+	color: white;
+	list-style: none;
+	margin-bottom: 15px;
+}
+
+li::before {
+	content: "Merci Do' & Swarlyl pour la motivation <3";
+	border: 4mm ridge rgb(12, 7, 7);
+	transform: rotate(45deg);
+	font-size: 0px;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 15px;
+}
