@@ -1,4 +1,4 @@
-/* Gère l'affichage du bon css en fonction de la section active */
+// Gère l'affichage du bon css en fonction de la section active
 function chooseCSS(target_section_id) {
     let active_section = document.querySelector('section.active');
     let active_stylesheet = document.getElementById("sections-stylesheets");
@@ -25,7 +25,28 @@ function chooseCSS(target_section_id) {
     active_stylesheet.href = `./frontend/styles/sections/${target_section_id}.css`;
 }
 
-/* Gère l'affichage des différentes sections */
+// Envoie le lien au backend
+async function sendLink(format) {
+    // Vérifie si le champ de renseignement du lien est vide ou non
+	if (!document.querySelector('.URL-input').value) {
+		return window.apiFunctions.sendError({
+            message: "Aucun lien n'est donné", 
+            title: "Bad_link", 
+            type: "info"
+        });
+	} else {
+        let url = document.querySelector('.URL-input').value; // On récupère la valeur du champ de renseignement
+        const data = {
+            format: format,
+            url: url,
+        }
+
+        window.apiFunctions.downloadRequest(data); // Transmission des informations au backend
+        document.querySelector('.URL-input').value = ""; // Réinitilisation de la barre de lien
+    }
+}
+
+// Gère l'affichage des différentes sections
 function showSection(target_section_id) {    
     const active_section = document.querySelector('section.active');
     //const active_button = document.querySelector('button.active');
@@ -44,35 +65,18 @@ function showSection(target_section_id) {
     chooseCSS(target_section_id);
 }
 
-async function sendLink(format) {
-    //Vérifie si le champ de renseignement du lien est vide ou non
-	if (!document.querySelector('.URL-input').value) {
-		return window.apiFunctions.sendError({
-            message: "Aucun lien n'est donné", 
-            title: "Bad_link", 
-            type: "warning"
-        });
-	} else {
-        let url = document.querySelector('.URL-input').value; //On récupère la valeur du champ de renseignement
-        const data = {
-            format: format,
-            url: url,
-        }
-
-        window.apiFunctions.downloadRequest(data); // Transmission des informations au backend
-        document.querySelector('.URL-input').value = ""; // Réinitilisation de la barre de lien
-    }
-}
-
+// Affiche les informations de versions
 addEventListener("load", async () => {
     chooseCSS();
-    let electronVersionSpan = document.getElementById("span-electron-version");
-    let magitivisseurVersionSpan = document.getElementById("span-magitivisseur-version");
-    let nodejsVersionSpan = document.getElementById("span-nodejs-version");
-    let chromeVersionSpan = document.getElementById("span-chrome-version");
+    let infosElectronVersionSpan = document.getElementById("span-electron-version");
+    let infosMagitivisseurVersionSpan = document.getElementById("span-magitivisseur-version");
+    let infosNodejsVersionSpan = document.getElementById("span-nodejs-version");
+    let infosChromeVersionSpan = document.getElementById("span-chrome-version");
+    let cmdMagitivisseurVersion = document.getElementById("cmd-Magitivisseur-version");
 
-    electronVersionSpan.innerText = `${versions.electron()}`;
-    magitivisseurVersionSpan.innerText = `${await versions.magitivisseur()}`;
-    nodejsVersionSpan.innerText = `${versions.nodejs()}`;
-    chromeVersionSpan.innerText = `${versions.chrome()}`;
+    infosElectronVersionSpan.innerText = `${versions.electron()}`;
+    infosMagitivisseurVersionSpan.innerText = `${await versions.magitivisseur()}`;
+    infosNodejsVersionSpan.innerText = `${versions.nodejs()}`;
+    infosChromeVersionSpan.innerText = `${versions.chrome()}`;
+    cmdMagitivisseurVersion.innerText = `Magitivisseur - v${await versions.magitivisseur()}`;
 });

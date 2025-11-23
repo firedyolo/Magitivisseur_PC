@@ -23,7 +23,7 @@ section.active {
 /*** Style de la scrollbar ***/
 ::-webkit-scrollbar {
     width: 8px;
-    background: linear-gradient(rgb(42, 0, 0), rgb(35, 0, 0));
+    background: linear-gradient(rgb(55, 73, 1), rgb(35, 0, 0));
 }
 ::-webkit-scrollbar-thumb {
     background-color: rgb(121, 2, 79);

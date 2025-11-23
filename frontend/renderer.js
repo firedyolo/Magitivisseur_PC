@@ -7,14 +7,15 @@ btn.addEventListener("click", async () => {
     filePathElement.innerHTML = filePath;
 });*/
 
-function showDownloadInfos(downloadData) {
+// Fonction qui affiche les informations de téléchargement dans le CMD de la page principale
+function showDownloadInfos(download_Data) {
     let cmd = document.getElementById("cmd-container");
     let rectangle = document.getElementById("cmd-typing-animation");
     let new_prompt = document.createElement("p");
-    new_prompt.innerText = downloadData.message;
+    new_prompt.innerText = download_Data.message;
 
     // Mise en style du texte qui s'affiche
-    switch (downloadData.status) {
+    switch (download_Data.status) {
         case "success":
             new_prompt.style.color = "green";
             break;
@@ -22,17 +23,21 @@ function showDownloadInfos(downloadData) {
         case "error":
             new_prompt.style.color = "red";
             break;
+        
+        case "warning":
+            new_prompt.style.color = "#df922eff";
+            break
 
         case "start":
             new_prompt.style.color = "#06ADC2";
             break;
 
         case "other":
-            new_prompt.style.color = "yellow";
+            new_prompt.style.color = "#df9cecff";
             break;
         
         default:
-            new_prompt.style.color = "rgb(197, 250, 250)";
+            new_prompt.style.color = "rgba(231, 138, 240, 1)";
             break;
     }
 

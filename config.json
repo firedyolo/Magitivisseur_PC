@@ -1,6 +1,13 @@
 {
+    "debugMode": false,
     "downloadConfig": {
-        "audioDownloadDir": "default",
-        "videoDownloadDir": "default"
+        "audio": {
+            "format": "mp3",
+            "dir": "default"
+        },
+        "video": {
+            "format": "mp4",
+            "dir": "default"
+        }
     }
 }

@@ -20,15 +20,16 @@
         <h1 class="header-text">De Youtube à fichier audio ou vidéo, il n'y a qu'un clic !</h1>
         <div class="convert-ui">
             <input class='URL-input' placeholder='https://www.youtube.com/watch?v=dQw4w9WgXcQ' autofocus />
+            
             <div class="buttons-ui">
                 <button onclick="sendLink('audio')">Audio</button>
                 <button onclick="sendLink('video')">Vidéo</button>
             </div>
-        </div>-
+        </div>
 
         <div class="cmd">
             <div class="cmd-header">
-                <img src="./frontend/img/logo.png" alt="LOGO">
+                <img src="./img/logo.png" alt="LOGO">
                 <p class="software-name">Start.bat</p>
 
                 <div class="cmd-icons">
@@ -38,7 +39,7 @@
 
             <div class="cmd-container" id="cmd-container">
                 <div class="cmd-text-header">
-                    <p>Magitivisseur [version 2.3.1]</p>
+                    <p id="cmd-Magitivisseur-version">Magitivisseur [version 2.3.1]</p>
                     <p>Projet open-source. Projet libre de droit à l'exception des logos et illustrations.</p>
                 </div>
 
@@ -55,10 +56,10 @@
 
     <section id="infos">
         <ul>
-            <li id="electron-version">Electron : version <span id="span-electron-version"></span></li>
-            <li id="magitivisseur-version">Magitivisseur : version <span id="span-magitivisseur-version"></span></li>
-            <li id="nodejs-version">NodeJs : version <span id="span-nodejs-version"></span></li>
-            <li id="chrome-version">Chrome : version <span id="span-chrome-version"></span></li>
+            <li id="infosElectron-version">Electron : version <span id="span-electron-version"></span></li>
+            <li id="infosMagitivisseur-version">Magitivisseur : version <span id="span-magitivisseur-version"></span></li>
+            <li id="infosNodejs-version">NodeJs : version <span id="span-nodejs-version"></span></li>
+            <li id="infosChrome-version">Chrome : version <span id="span-chrome-version"></span></li>
         </ul>
     </section>
 
