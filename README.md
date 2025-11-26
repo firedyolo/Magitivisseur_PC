@@ -58,3 +58,9 @@ Si vous souhaitez contribuer au projet, voici quelques pistes :
 2. Signaler les bugs et autres problèmes (fuite de mémoire, problèmes de performances, etc...)
 3. Traduire les différents textes en d'autres langues
 4. Soutenir et contribuer aux autres projets mentionnés. Sans eux, Magitivisseur n'aurait jamais vu le jour
+
+# LICENCES
+
+Le code source est distribué sous la licence **GPL-3.0**, ce qui le rend totalement libre d'usage. Voir [LICENSE](./LICENSE)
+
+Cependant, les **logos** et **noms** associés à ce projet sont libres uniquement pour un usage **strictement** personnel. [LICENSE-IDENTITY](./LICENSE-IDENTITY.txt)
