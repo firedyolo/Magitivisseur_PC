@@ -12,18 +12,18 @@ Sur Windows, Magitivisseur peut être reconnu comme un virus, ou alors une fenê
 
 ### Reconnu comme virus
 Si l'exécutable est reconnu comme un virus, voici quelques solutions :
-* Installer le dans un dossier, et configurer votre antivirus pour qu'il n'analyse pas les fichiers de ce dossier nouvellement crée
-* Autoriser la "menace"
-* Compiler vous-même le programme
+* Installez-le dans un dossier, et configurez votre antivirus pour qu'il n'analyse pas les fichiers de ce dossier nouvellement crée
+* Autorisez la "menace"
+* Compilez vous-même le programme
 
 ### Fenêtre SmartScreen
-L'application n'étant pas signée, une fenêtre "SmartScreen" apparaît pour vous prévenir que le logiciel peut potentiellement représentée une menace. Pour ignorer cet avertissement, veuillez cliquer sur "Informations complémentaires", puis "Exécuter quand même"
+L'application n'étant pas signée, une fenêtre "SmartScreen" apparaît pour vous prévenir que le logiciel peut potentiellement représenté une menace. Pour ignorer cet avertissement, veuillez cliquer sur "Informations complémentaires", puis "Exécuter quand même"
 
 *Afin de signer une application, il faut un budget de 70 euros à 300 par an. Je n'ai pas ce budget*
 # Compilation locale
 
 __Prérequis__ : <br></br>
-›› NodeJs (installez le et ajoutez-le à votre "**PATH**" pour + de simplicité)<br></br>
+›› NodeJs (installez-le et ajoutez-le à votre "**PATH**" pour + de simplicité)<br></br>
 ›› Git (si vous souhaitez cloner via le cli)
 
 1. Installez le projet d'une de ces manières
@@ -31,7 +31,7 @@ __Prérequis__ : <br></br>
 	* Téléchargez le code source depuis l'onglet "**release**"
 	* Téléchargez le code en archive .zip
 
-2. Ouvrez un cmd et accéder à votre dossier dans lequel se trouve le code source à l'aide de la commande : cd votre/chemin/de/dossier
+2. Ouvrez un cmd et accédez à votre dossier dans lequel se trouve le code source à l'aide de la commande : cd votre/chemin/de/dossier
 
 3. Utilisez la commande : `npm install`
 
@@ -39,6 +39,10 @@ __Prérequis__ : <br></br>
 	* Pour Linux : `"build": "electron-builder -l"`
 	* Pour Windows : `"build": "electron-builder -w"`
 	* Pour Linux & Windows en même temps : `"build": "electron-builder -wl"`
+
+> 4.1 : Si vous souhaitez changer l'icon affichée dans votre barre des tâches / le logo de l'application, modifiez le fichier `icon.png` par votre image. Le nom doit rester `icon.png` et doit avoir pour taille 256x256
+
+5. Exécutez la commande `npm run build` et laissez le programme se compiler. Cela peut prendre un peu de temps
 
 > Pour une raison que j'ignore, il peut y avoir des problèmes à compiler l'exécutable pour Linux en utilisant une machine Windows
 

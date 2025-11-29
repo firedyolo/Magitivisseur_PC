@@ -1,4 +1,6 @@
-import { dialog, nativeImage } from "electron/main";
+import { app } from "electron/main";
+import { window } from "../main.js";
+import path from 'node:path';
 
 class Bug {
     constructor(bug_Data) {        
@@ -8,24 +10,20 @@ class Bug {
         this.type = bug_Data.type ?? "error";
     }
 
-    returnBugData() {
+    returnBugData() {        
         let logIcon;
-        const platform = process.platform;   
-        
-        if (platform === "linux") {
-            const base = "/img/icons/win";
 
-            if (this.type === "error") logIcon = nativeImage.createFromPath(`${base}/erreur-01.ico`);
-            if (this.type === "warning") logIcon = nativeImage.createFromPath(`${base}/erreur-01.ico`);
-            if (this.type === "info") logIcon = nativeImage.createFromPath(`${base}/erreur-01.ico`);
+        if (app.isPackaged) {
+            const icons_path = path.join(process.resourcesPath, "frontend/icons");
+            if (this.type === "error") logIcon = path.join(icons_path, "erreur-01.png");
+            if (this.type === "warning") logIcon = path.join(icons_path, "warning-01.png");
+            if (this.type === "info") logIcon = path.join(icons_path, "information-01.png");
         }
-
-        if (platform === "linux") {
-            const base = "/img/icons/linux";
-            
-            if (this.type === "error") logIcon = nativeImage.createFromPath(`${base}/erreur-01.png`);
-            if (this.type === "warning") logIcon = nativeImage.createFromPath(`${base}/warning-01.png`);
-            if (this.type === "info") logIcon = nativeImage.createFromPath(`${base}/info-01.png`);
+                    
+        else {
+            if (this.type === "error") logIcon = "frontend/icons/erreur-01.png";
+            if (this.type === "warning") logIcon = "frontend/icons/warning-01.png";
+            if (this.type === "info") logIcon = "frontend/icons/information-01.png";
         }
 
         return {
@@ -33,12 +31,12 @@ class Bug {
             message: this.message,
             title: this.title,
             type: this.type,
-            icon: logIcon
+            icon_path: logIcon
         }
     }
 
-    handleBug() {        
-        dialog.showMessageBox(this.returnBugData());
+    sendBug() {      
+        window.webContents.send('errorInfos', this.returnBugData());
     }
 }
 

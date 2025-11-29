@@ -1,7 +1,7 @@
 {
     "name": "magitivisseur",
-    "version": "3.0.0",
-    "description": "Interface graphique pour ytdlp de goat :)",
+    "version": "3.0.1",
+    "description": "Interface graphique pour ytdlp, de goat :)",
     "main": "main.js",
     "type": "module",
     "scripts": {
@@ -27,11 +27,18 @@
             "!.vscode{/*}",
             "!dist{/*}"
         ],
-        "extraResources": [{
-            "from": "binaries/",
-            "to": "binaries",
-            "filter": ["**/*"]
-        }],
+        "extraResources": [
+            {
+                "from": "binaries/",
+                "to": "binaries",
+                "filter": ["**/*"]
+            },
+            {
+                "from": "frontend/icons",
+                "to": "frontend/icons",
+                "filter": ["**/*"]
+            }
+        ],
         "win": {
             "target": ["portable", "nsis"]
         },

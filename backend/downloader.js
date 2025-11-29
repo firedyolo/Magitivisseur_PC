@@ -63,7 +63,7 @@ async function downloadAudio(url, title) {
             message: "Une erreur est survenue avec FFMPEG",
             title: "Ffmpeg_error",
             type: "error",
-        }).handleBug();
+        }).sendBug();
     });
 
     // Event ffmpeg quand le processus s'arrrête
@@ -133,7 +133,7 @@ async function downloadVideo(url, title) {
             message: "Une erreur est survenue avec FFMPEG",
             title: "Ffmpeg_error",
             type: "error",
-        }).handleBug();
+        }).sendBug();
     });
 
     // Event ffmpeg quand le processus s'arrrête

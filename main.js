@@ -14,13 +14,21 @@ const PLAYLIST_QUEUE = new Map();
 
 // Gestion des erreurs de script
 process.on('unhandledRejection', async(error) => {	
-	console.error("Une erreur est survenue :c", error);
     return new Bug({
         detail: `${error.stack}`,
         message: "Un script a rencontré une difficulté !",
         title: "unhandledRejection",
         type: "error",
-    }).handleBug();
+    }).sendBug();
+});
+
+process.on("uncaughtException", async(error) => {	
+    return new Bug({
+        detail: `${error.stack}`,
+        message: "Un script a rencontré un crash",
+        title: "uncaughtException",
+        type: "error",
+    }).sendBug();
 });
 
 // Création de la fenêtre de l'application
@@ -56,11 +64,18 @@ app.whenReady().then(() => {
     });
 
     // Gestion des requêtes de téléchargement
-    ipcMain.handle('downloader', async (event, data) => {
-        
+    ipcMain.on("downloader", (event, data) => {
         const { format, url } = data;
         const { id, type_of_url } = extractInfosFromURL(url) ?? {};
 
+        if (url.length === 0) {
+            return new Bug({
+                message: "Aucune url n'est donnée :c",
+                title: "Bad_link",
+                type: "info",
+            }).sendBug();
+        }
+        
         if (id === undefined) {
             return new Bug({
                 detail: "Le lien Youtube est invalide",
@@ -95,6 +110,10 @@ app.whenReady().then(() => {
 
     ipcMain.handle("getAppVersion", (event) => {
         return app.getVersion();
+    });
+
+    ipcMain.handle("getFrontendLogo", (event) => {
+        return app.getAppPath();
     });
 });
 

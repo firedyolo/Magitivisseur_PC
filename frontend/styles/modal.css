@@ -1,0 +1,64 @@
+:root {
+    --dialog-text-color: rgb(180, 186, 185);
+}
+
+dialog {
+    align-items: center;
+    background-color: rgb(29, 18, 31);
+    border-color: rgb(69, 16, 78);
+    display: flex;
+    max-width: 75%;
+    overflow: scroll;
+    overflow-x: auto;
+    overflow-y: auto;
+    position: absolute;
+    top: 50%;
+    width: max-content;
+    z-index: 1;
+}
+
+dialog button, dialog details, legend, dialog p {
+    color: var(--dialog-text-color);
+}
+
+dialog button {
+    background-color: rgb(57, 26, 62);
+    border: none;
+    padding: 15px;
+    width: 100%;
+}
+
+dialog form {
+    border: none;
+}
+
+dialog img {
+    width: 100px;
+    height: 100px;
+}
+
+dialog fieldset {
+    border-color: rgb(140, 44, 126);
+}
+
+dialog pre {
+    color: var(--dialog-text-color);
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/*** Style de la scrollbar de la boîte de dialogue ***/
+dialog::-webkit-scrollbar {
+    width: 8px;
+    background-color: rgb(57, 26, 62);
+}
+
+dialog::-webkit-scrollbar-thumb {
+    background-color: rgb(121, 2, 79);
+}
+
+/*//TODO Faire une animation de "fondu" pour faire apparaître proprement la modal */

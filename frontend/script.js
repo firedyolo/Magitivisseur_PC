@@ -27,23 +27,14 @@ function chooseCSS(target_section_id) {
 
 // Envoie le lien au backend
 async function sendLink(format) {
-    // Vérifie si le champ de renseignement du lien est vide ou non
-	if (!document.querySelector('.URL-input').value) {
-		return window.apiFunctions.sendError({
-            message: "Aucun lien n'est donné", 
-            title: "Bad_link", 
-            type: "info"
-        });
-	} else {
-        let url = document.querySelector('.URL-input').value; // On récupère la valeur du champ de renseignement
-        const data = {
-            format: format,
-            url: url,
-        }
-
-        window.apiFunctions.downloadRequest(data); // Transmission des informations au backend
-        document.querySelector('.URL-input').value = ""; // Réinitilisation de la barre de lien
+    let url = document.querySelector('.URL-input').value; // On récupère la valeur du champ de renseignement
+    const data = {
+        format: format,
+        url: url,
     }
+
+    window.apiFunctions.downloadRequest(data); // Transmission des informations au backend
+    document.querySelector('.URL-input').value = ""; // Réinitilisation de la barre de lien
 }
 
 // Gère l'affichage des différentes sections
@@ -67,6 +58,11 @@ function showSection(target_section_id) {
 
 // Affiche les informations de versions
 addEventListener("load", async () => {
+    const cmd_logo = document.getElementById("cmd-logo");
+    const logo = await window.extraFunctions.getCMDlogo();
+
+    cmd_logo.src = logo;
+    
     chooseCSS();
     let infosElectronVersionSpan = document.getElementById("span-electron-version");
     let infosMagitivisseurVersionSpan = document.getElementById("span-magitivisseur-version");
@@ -79,4 +75,16 @@ addEventListener("load", async () => {
     infosNodejsVersionSpan.innerText = `${versions.nodejs()}`;
     infosChromeVersionSpan.innerText = `${versions.chrome()}`;
     cmdMagitivisseurVersion.innerText = `Magitivisseur - v${await versions.magitivisseur()}`;
+});
+
+// Permet de gérer la suppression des boîtes de dialogues
+addEventListener("click", (event) => {
+    if (event.target.id === "modal-button") {
+        event.preventDefault();
+
+        const modal_button = document.getElementById("modal-button");
+            
+        const modal = modal_button.offsetParent;
+        modal.remove();
+    }
 });

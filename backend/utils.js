@@ -6,12 +6,7 @@ import { existsSync } from "node:fs";
 
 function checkIfFileExist(filepath) {    
     if (existsSync(filepath)) {
-        /*dialog.showMessageBox({
-            message: `${filepath} existe déjà. Téléchargement impossible`,
-            detail: "Une option pour réécrire les fichiers s'ils existent sera disponible plus tard"
-        });*/
         sendDownloadInfos(`${filepath} existe déjà !`, "warning");
-        console.error(`${filepath} existe déjà !`);
         
         return true;
     }
