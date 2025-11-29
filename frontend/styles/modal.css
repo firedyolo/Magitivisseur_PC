@@ -60,5 +60,3 @@ dialog::-webkit-scrollbar {
 dialog::-webkit-scrollbar-thumb {
     background-color: rgb(121, 2, 79);
 }
-
-/*//TODO Faire une animation de "fondu" pour faire apparaître proprement la modal */

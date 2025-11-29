@@ -33,7 +33,7 @@ async function sendLink(format) {
         url: url,
     }
 
-    window.apiFunctions.downloadRequest(data); // Transmission des informations au backend
+    window.extraFunctions.downloadRequest(data); // Transmission des informations au backend
     document.querySelector('.URL-input').value = ""; // Réinitilisation de la barre de lien
 }
 
@@ -59,8 +59,7 @@ function showSection(target_section_id) {
 // Affiche les informations de versions
 addEventListener("load", async () => {
     const cmd_logo = document.getElementById("cmd-logo");
-    const logo = await window.extraFunctions.getCMDlogo();
-
+    const logo = await window.extraFunctions.getCMDlogo();    
     cmd_logo.src = logo;
     
     chooseCSS();

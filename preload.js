@@ -5,7 +5,7 @@ const { createModal, showDownloadInfos } = require("./frontend/renderer");
 
 async function getCMDlogo() {
     const app_path = await ipcRenderer.invoke("getFrontendLogo");
-    const logo = path.join(app_path, "logos/blanc.png");
+    const logo = path.join(app_path, "logos/logo-cmd.png");
 
     return logo;
 }

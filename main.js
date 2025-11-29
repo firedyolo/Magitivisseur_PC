@@ -82,7 +82,7 @@ app.whenReady().then(() => {
                 message: "Il n'y a pas d'ID de vidéo ou de playlist",
                 title: "Bad_link",
                 type: "info",
-            }).handleBug();
+            }).sendBug();
         }
 
         if (type_of_url === "playlist") {            
@@ -105,7 +105,7 @@ app.whenReady().then(() => {
 
     // Gestion de la des signals d'erreur
     ipcMain.handle('error', async (event, errorData) => {
-        new Bug(errorData).handleBug();
+        new Bug(errorData).sendBug();
     });
 
     ipcMain.handle("getAppVersion", (event) => {
